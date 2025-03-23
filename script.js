@@ -97,13 +97,22 @@ const timerDisplay = document.getElementById('timer');
 const feedback = document.getElementById('feedback');
 
 function startLevel() {
-    const pairsCount = 5 + (level - 1); // 5 пар на 1 уровне, +1 на каждом следующем
+    // Очищаем текущие пары перед началом уровня
+    currentPairs = {};
+    
+    // Устанавливаем количество пар: 5 на первом уровне, +1 на каждом следующем
+    const pairsCount = 5 + (level - 1);
     const shuffledWords = wordsLeft.sort(() => 0.5 - Math.random());
     currentPairs = Object.fromEntries(shuffledWords.slice(0, Math.min(pairsCount, wordsLeft.length)));
     
-    timeLeft = 20 + (level - 1) * 4; // 20 сек на 1 уровне, +4 сек на каждом следующем
-    timerDisplay.textContent = `Level ${level} | Time: ${timeLeft} | Pairs: ${pairsCount}`;
+    // Устанавливаем время: 20 сек на первом уровне, +4 сек на каждом следующем
+    timeLeft = 20 + (level - 1) * 4;
+    
+    // Отображаем уровень, время и количество пар
+    timerDisplay.textContent = `Level ${level} | Time: ${timeLeft} | Pairs: ${Object.keys(currentPairs).length}`;
     renderWords();
+    
+    // Запускаем таймер
     clearInterval(timer);
     timer = setInterval(updateTimer, 1000);
 }
@@ -151,7 +160,6 @@ function checkPair(rusWord) {
         delete currentPairs[engWord];
         wordsLeft = wordsLeft.filter(([eng]) => eng !== engWord);
         
-        // Убрано добавление новых пар во время уровня
         if (Object.keys(currentPairs).length === 0) {
             level++;
             showFeedback('RESPECT+', 'respect');
@@ -174,8 +182,7 @@ function showFeedback(text, className = '') {
 
 function updateTimer() {
     timeLeft--;
-    const pairsCount = 5 + (level - 1);
-    timerDisplay.textContent = `Level ${level} | Time: ${timeLeft} | Pairs: ${pairsCount}`;
+    timerDisplay.textContent = `Level ${level} | Time: ${timeLeft} | Pairs: ${Object.keys(currentPairs).length}`;
     if (timeLeft <= 0) {
         clearInterval(timer);
         feedback.textContent = 'ПОТРАЧЕНО';
