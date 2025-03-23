@@ -97,14 +97,11 @@ const timerDisplay = document.getElementById('timer');
 const feedback = document.getElementById('feedback');
 
 function startLevel() {
-    // Количество пар: 5 на первом уровне, +1 на каждом следующем
-    const pairsCount = 5 + (level - 1);
-    // Выбираем ровно pairsCount слов из доступных
+    const pairsCount = 5 + (level - 1); // 5 пар на 1 уровне, +1 на каждом следующем
     const shuffledWords = wordsLeft.sort(() => 0.5 - Math.random());
     currentPairs = Object.fromEntries(shuffledWords.slice(0, Math.min(pairsCount, wordsLeft.length)));
     
-    // Таймер: 20 секунд на первом уровне, +4 на каждом следующем
-    timeLeft = 20 + (level - 1) * 4;
+    timeLeft = 20 + (level - 1) * 4; // 20 сек на 1 уровне, +4 сек на каждом следующем
     timerDisplay.textContent = `Level ${level} | Time: ${timeLeft} | Pairs: ${pairsCount}`;
     renderWords();
     clearInterval(timer);
@@ -154,11 +151,7 @@ function checkPair(rusWord) {
         delete currentPairs[engWord];
         wordsLeft = wordsLeft.filter(([eng]) => eng !== engWord);
         
-        if (level > 1 && wordsLeft.length > 0) {
-            const newPair = wordsLeft[Math.floor(Math.random() * wordsLeft.length)];
-            currentPairs[newPair[0]] = newPair[1];
-        }
-        
+        // Убрано добавление новых пар во время уровня
         if (Object.keys(currentPairs).length === 0) {
             level++;
             showFeedback('RESPECT+', 'respect');
@@ -181,7 +174,7 @@ function showFeedback(text, className = '') {
 
 function updateTimer() {
     timeLeft--;
-    const pairsCount = 5 + (level - 1); // Обновляем отображение пар для текущего уровня
+    const pairsCount = 5 + (level - 1);
     timerDisplay.textContent = `Level ${level} | Time: ${timeLeft} | Pairs: ${pairsCount}`;
     if (timeLeft <= 0) {
         clearInterval(timer);
