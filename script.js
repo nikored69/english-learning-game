@@ -97,8 +97,9 @@ const timerDisplay = document.getElementById('timer');
 const feedback = document.getElementById('feedback');
 
 function startLevel() {
+    const pairsCount = level * 5; // 5 пар на 1 уровне, 10 на 2, 15 на 3 и т.д.
     currentPairs = Object.fromEntries(
-        wordsLeft.sort(() => 0.5 - Math.random()).slice(0, 5)
+        wordsLeft.sort(() => 0.5 - Math.random()).slice(0, Math.min(pairsCount, wordsLeft.length))
     );
     timeLeft = 20 + (level - 1) * 15;
     timerDisplay.textContent = `Time: ${timeLeft}`;
