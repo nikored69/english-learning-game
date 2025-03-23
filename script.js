@@ -102,7 +102,7 @@ function startLevel() {
         wordsLeft.sort(() => 0.5 - Math.random()).slice(0, Math.min(pairsCount, wordsLeft.length))
     );
     timeLeft = 20 + (level - 1) * 4; // 20 сек на 1 уровне, +4 сек на каждом следующем
-    timerDisplay.textContent = `Level ${level} | Time: ${timeLeft}`; // Добавлен номер уровня для отладки
+    timerDisplay.textContent = `Level ${level} | Time: ${timeLeft}`; // Отображаем уровень и время
     renderWords();
     clearInterval(timer);
     timer = setInterval(updateTimer, 1000);
