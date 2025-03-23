@@ -97,11 +97,11 @@ const timerDisplay = document.getElementById('timer');
 const feedback = document.getElementById('feedback');
 
 function startLevel() {
-    const pairsCount = 5 + (level - 1) * 5; // 5 пар на 1 уровне, +5 на каждом следующем
+    const pairsCount = 5 + (level - 1); // 5 пар на 1 уровне, +1 на каждом следующем
     currentPairs = Object.fromEntries(
         wordsLeft.sort(() => 0.5 - Math.random()).slice(0, Math.min(pairsCount, wordsLeft.length))
     );
-    timeLeft = 20 + (level - 1) * 15;
+    timeLeft = 20 + (level - 1) * 4; // 20 сек на 1 уровне, +4 сек на каждом следующем
     timerDisplay.textContent = `Time: ${timeLeft}`;
     renderWords();
     clearInterval(timer);
