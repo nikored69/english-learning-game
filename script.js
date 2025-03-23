@@ -97,12 +97,15 @@ const timerDisplay = document.getElementById('timer');
 const feedback = document.getElementById('feedback');
 
 function startLevel() {
-    const pairsCount = 5 + (level - 1); // 5 пар на 1 уровне, +1 на каждом следующем
-    currentPairs = Object.fromEntries(
-        wordsLeft.sort(() => 0.5 - Math.random()).slice(0, Math.min(pairsCount, wordsLeft.length))
-    );
-    timeLeft = 20 + (level - 1) * 4; // 20 сек на 1 уровне, +4 сек на каждом следующем
-    timerDisplay.textContent = `Level ${level} | Time: ${timeLeft}`; // Отображаем уровень и время
+    // Количество пар: 5 на первом уровне, +1 на каждом следующем
+    const pairsCount = 5 + (level - 1);
+    // Выбираем ровно pairsCount слов из доступных
+    const shuffledWords = wordsLeft.sort(() => 0.5 - Math.random());
+    currentPairs = Object.fromEntries(shuffledWords.slice(0, Math.min(pairsCount, wordsLeft.length)));
+    
+    // Таймер: 20 секунд на первом уровне, +4 на каждом следующем
+    timeLeft = 20 + (level - 1) * 4;
+    timerDisplay.textContent = `Level ${level} | Time: ${timeLeft} | Pairs: ${pairsCount}`;
     renderWords();
     clearInterval(timer);
     timer = setInterval(updateTimer, 1000);
@@ -178,7 +181,8 @@ function showFeedback(text, className = '') {
 
 function updateTimer() {
     timeLeft--;
-    timerDisplay.textContent = `Level ${level} | Time: ${timeLeft}`;
+    const pairsCount = 5 + (level - 1); // Обновляем отображение пар для текущего уровня
+    timerDisplay.textContent = `Level ${level} | Time: ${timeLeft} | Pairs: ${pairsCount}`;
     if (timeLeft <= 0) {
         clearInterval(timer);
         feedback.textContent = 'ПОТРАЧЕНО';
