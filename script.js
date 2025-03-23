@@ -129,7 +129,7 @@ const words = {
 };
 
 let level = 1;
-let wordsLeft = Object.entries(words);
+let allWords = Object.entries(words); // Полный неизменяемый список слов
 let currentPairs = {};
 let selectedEng = null;
 let timer;
@@ -146,8 +146,8 @@ function startLevel() {
     
     // Устанавливаем количество пар: 5 на первом уровне, +1 на каждом следующем
     const pairsCount = 5 + (level - 1);
-    const shuffledWords = wordsLeft.sort(() => 0.5 - Math.random());
-    currentPairs = Object.fromEntries(shuffledWords.slice(0, Math.min(pairsCount, wordsLeft.length)));
+    const shuffledWords = allWords.sort(() => 0.5 - Math.random()); // Всегда берём из полного списка
+    currentPairs = Object.fromEntries(shuffledWords.slice(0, Math.min(pairsCount, allWords.length)));
     
     // Устанавливаем время: 20 сек на первом уровне, +4 сек на каждом следующем
     timeLeft = 20 + (level - 1) * 4;
@@ -202,7 +202,7 @@ function checkPair(rusWord) {
     if (currentPairs[engWord] === rusWord) {
         showFeedback('✅');
         delete currentPairs[engWord];
-        wordsLeft = wordsLeft.filter(([eng]) => eng !== engWord);
+        // Не уменьшаем allWords, чтобы пары оставались случайными
         
         if (Object.keys(currentPairs).length === 0) {
             level++;
